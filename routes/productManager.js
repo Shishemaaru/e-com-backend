@@ -1,6 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const Model = require('../models/productmodel');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination : (req,file, cb) => {
+        cb(null, './uploads')
+    },
+    filename : (req,file,cb)=>{
+        cb(null,file.originalname);
+    }
+
+})
+
+const upload  = multer({ storage : storage})
+
+router.post('/addimg', upload.single('image'),(req,res)=>{
+    console.log(req.body);
+    res.json({message: "file upload success"})
+})
 
 router.get('/', (req, res) => {
     res.send("Router Working..")
@@ -63,6 +81,18 @@ router.delete('/delete/:id', (req,res) => {
     .catch( err => {
         res.status(500).json(err)
     })
+})
+
+router.get('/getbyid/:product_id', (req,res) => {
+    let product_id = req.params.product_id;
+    Model.findById(product_id)
+    .then(data => {
+        console.log(`fetched ${data}`);
+        res.status(200).json(data);
+     })
+     .catch( err => {
+         res.status(500).json(err)
+     })
 })
 
 module.exports = router;

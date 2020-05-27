@@ -6,7 +6,12 @@ const userschema = new Schema({
     username : String,
     password : String,
     age : Number,
-    email : String
+    email : String,
+    contact : Number,
+    address : [{type:Object}],
+    created : Date,
+    image: String,
+    admin : Boolean,
 })
 
 const usermodel = mongoose.model("users", userschema);
