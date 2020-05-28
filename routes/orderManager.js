@@ -60,6 +60,7 @@ router.get('/getbyuser/:id',(req,res)=>{
     user_id = req.params.id
     Model.find({user: user_id})
     .populate('product')
+    .populate('user')
     .then((data)=>{
         res.status(200).json(data);
     })
